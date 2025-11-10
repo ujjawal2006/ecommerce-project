@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedStore</title>
+    <link rel="stylesheet" href="{% static 'css/product-det.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d511cacf01.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li> <a href="{% url 'home' %}">Home</a></li>
+                    <li> <a href="{% url 'Products' %}">Products</a></li>
+                    <li> <a href="">Contact</a></li>
+                    <li> <a href="">Account</a></li>
+                    <li> <a href="">About</a></li>
+                </ul>
+            </nav>
+ <!-- Navbar cart icon -->
+<a href="{% url 'show_cart' %}" style="position: relative;">
+    <img src="{% static 'images/cart.png' %}" width="30px" height="30px">
+    {% if cart_item_count > 0 %}
+    <span style="position: absolute; top: -8px; right: -8px; background: red; color: white; 
+                 font-size: 12px; padding: 2px 6px; border-radius: 50%;">
+        {{ cart_item_count }}
+    </span>
+    {% endif %}
+</a>
+        </div>
+    </div>
+    <div class="small-container single-product">
+        <div class="row">
+            <div class="col-2">
+                <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
+            </div>
+            <div class="col-2">
+                <p>Home / {{ product.name }}</p>
+                <h1>{{ product.name }}</h1>
+                <h4>${{ product.price }}</h4>
+                <select>
+                    <option>Select Size</option>
+                    <option>XXL</option>
+                    <option>XL</option>
+                    <option>Large</option>
+                    <option>Small</option>
+                    <option>S</option>
+                </select>
+                <input type="number" value="1">
+                <a href="{% url 'add_to_cart' product.id %}" class="btn">Add to Cart</a>
+                <a href="{%url 'deliveryaddres'%}" class="btn">Buy Now</a>
+                <h3>Product Details <i class="fa fa-indent"></i></h3>
+                <br>
+                <p>{{ product.description }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="related-products">
+        <h2>Related Products</h2>  
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download our app</h3>
+                    <p>Download app for android and ios mobile Phone</p>
+                    <div class="app-logo">
+                        <img src="{% static 'images/play-store.png' %}">
+                        <img src="{% static 'images/app-store.png' %}">
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="{% static 'images/logo-white.png' %}">
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est commodi totam quia itaque!</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li>Coupons</li>
+                        <li>Offers</li>
+                        <li>FAQs</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtube</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">copyright 2025</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedStore</title>
+    <link rel="stylesheet" href="{% static 'css/home.css'%}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d511cacf01.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #fef5f5;
+    padding: 0;
+    margin: 0;
+  }
+
+  .form-container, .select-container {
+    max-width: 550px;
+    margin: auto;
+    background: white;
+    padding: 5px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    margin-top: 30px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    margin-top: -20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .row .form-group {
+    flex: 1 1 45%;
+  }
+
+  .radio-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .radio-group label {
+    font-weight: normal;
+  }
+
+  button {
+    background-color: #f26522;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  button:hover {
+    background-color: #d8541b;
+  }
+
+  .address-box {
+    border: 1px solid #ddd;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+  }
+
+  .address-box input {
+    margin-right: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+
+    .row .form-group {
+      flex: 1 1 100%;
+    }
+
+    .form-container {
+      padding: 0px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="container">
+    <div class="navbar">
+      <div class="logo">
+        <img src="{% static 'images/logo.png' %}" width="125px">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'Products' %}">Products</a></li>
+          <li><a href="">Contact</a></li>
+          <li><a href="">About</a></li>
+          {% if user.is_authenticated %}
+          <li class="dropdown" id="accountDropdown">
+            <a href="javascript:void(0);" onclick="toggleDropdown()">{{ user.username }} &#x25BC;</a>
+            <div class="dropdown-content" id="dropdownMenu">
+              <a href="{% url 'logout' %}">Logout</a>
+              <a href="{% url 'edt_profile' %}">Profile</a>
+            </div>
+          </li>
+          {% else %}
+          <li class="dropdown" id="accountDropdown">
+            <a href="javascript:void(0);" onclick="toggleDropdown()">Account &#x25BC;</a>
+            <div class="dropdown-content" id="dropdownMenu">
+              <a href="{% url 'login' %}">Login</a>
+              <a href="{% url 'signup' %}">Create New Account</a>
+            </div>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+    {% comment %} // select address // {% endcomment %}
+<form method="post" action="{% url 'select_address_and_pay' %}">
+  {% csrf_token %}
+  {% for addr in addresses %}
+    <div class="address-box">
+      <input type="radio" name="selected_address" value="{{ addr.id }}" required>
+      <strong>{{ addr.FullName }}</strong><br>
+      {{ addr.Add }}, {{ addr.city }}, {{ addr.state }} - {{ addr.Pincode }}<br>
+      Mobile: {{ addr.MobileNumber }}
+    </div>
+  {% endfor %}
+  <button type="submit">Deliver to this Address</button>
+</form>
+
+
+
+    <!-- Show Add Address Form -->
+    <div class="form-container">
+      <h2>Add New Address</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" name="name" >
+          </div>
+          <div class="form-group">
+            <label for="mobile">Mobile Number</label>
+            <input type="text" name="MobileNumber" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" name="pincode" >
+          </div>
+          <div class="form-group">
+            <label for="locality">Locality</label>
+            <input type="text" name="locality" >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address (Area and Street)</label>
+          <textarea name="address" rows="3" ></textarea>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="city">City/District</label>
+            <input type="text" name="city" >
+          </div>
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" name="state" >
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="landmark">Landmark (Optional)</label>
+            <input type="text" name="landmark">
+          </div>
+          <div class="form-group">
+            <label for="alt_phone">Alternate Phone</label>
+            <input type="text" name="alt_phone">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Address Type</label>
+          <div class="radio-group">
+            <label><input type="radio" name="address_type" value="Home"> Home</label>
+            <label><input type="radio" name="address_type" value="Work"> Work</label>
+          </div>
+        </div>
+
+        <button type="submit">Save and Deliver Here</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

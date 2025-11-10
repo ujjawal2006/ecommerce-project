@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup | RedStore</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d511cacf01.js" crossorigin="anonymous"></script>
+
+  <!-- SweetAlert CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
+
+  <style>
+    .form-container {
+      max-width: 600px;
+      background: #fff;
+      margin: 50px auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ff523b;
+    }
+    .btn-primary {
+      background-color: #ff523b;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 30px;
+    }
+    .btn-primary:hover {
+      background-color: #ff7b61;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<!-- HEADER START -->
+<div class="header">
+  <div class="container">
+    <div class="navbar">
+      <div class="logo">
+        <img src="{% static 'images/logo.png' %}" width="125px">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'Products' %}">Products</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">About</a></li>
+          {% if user.is_authenticated %}
+            <li class="dropdown" id="accountDropdown">
+              <a href="javascript:void(0);" onclick="toggleDropdown()">{{ user.username }} &#x25BC;</a>
+              <div class="dropdown-content" id="dropdownMenu">
+                <a href="{% url 'logout' %}">Logout</a>
+              </div>
+            </li>
+          {% else %}
+            <li class="dropdown" id="accountDropdown">
+              <a href="javascript:void(0);" onclick="toggleDropdown()">Account &#x25BC;</a>
+              <div class="dropdown-content" id="dropdownMenu">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Signup</a>
+              </div>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- Signup Form Start -->
+<div class="container form-container">
+  <h2>Enter Your Details</h2>
+  <form method="POST" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="first_name" placeholder="John" required>
+    </div>
+
+    <div class="col-md-6">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Doe" required>
+    </div>
+
+    <div class="col-md-12">
+      <label for="inputEmail" class="form-label">Email</label>
+      <input type="email" class="form-control" id="inputEmail" name="email" placeholder="you@example.com" required>
+    </div>
+
+    <div class="col-md-12">
+      <label for="inputPassword" class="form-label">Phone Number</label>
+      <input type="number" class="form-control"  name="number" required>
+    </div>
+
+    <div class="col-md-12">
+      <label for="inputAddress" class="form-label">Address</label>
+      <input type="text" class="form-control" id="inputAddress" name="address" placeholder="1234 Main St" required>
+    </div>
+
+    <div class="col-md-6">
+      <label for="inputCity" class="form-label">City</label>
+      <input type="text" class="form-control" id="inputCity" name="city" required>
+    </div>
+
+    <div class="col-md-4">
+      <label for="inputState" class="form-label">State</label>
+      <select id="inputState" class="form-select" name="state" required>
+        <option selected disabled>Choose...</option>
+        <option>Delhi</option>
+        <option>Mumbai</option>
+        <option>Bangalore</option>
+        <option>Hyderabad</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label for="inputZip" class="form-label">Zip</label>
+      <input type="text" class="form-control" id="inputZip" name="zip" required>
+    </div>
+
+    <div class="col-12 text-center">
+      <button type="submit" class="btn btn-primary">Create Account</button>
+    </div>
+  </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your JS -->
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

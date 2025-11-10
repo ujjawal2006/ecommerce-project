@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup | RedStore</title>
+
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d511cacf01.js" crossorigin="anonymous"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+
+  <!-- SweetAlert -->
+<link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
+</head>
+
+<body>
+
+<!-- HEADER START -->
+<div class="header">
+  <div class="container">
+    <div class="navbar">
+      <div class="logo">
+        <img src="{% static 'images/logo.png' %}" width="125px">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'Products' %}">Products</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">About</a></li>
+          {% if user.is_authenticated %}
+            <li class="dropdown" id="accountDropdown">
+              <a href="javascript:void(0);" onclick="toggleDropdown()">{{ user.username }} &#x25BC;</a>
+              <div class="dropdown-content" id="dropdownMenu">
+                <a href="{% url 'logout' %}">Logout</a>
+              </div>
+            </li>
+          {% else %}
+            <li class="dropdown" id="accountDropdown">
+              <a href="javascript:void(0);" onclick="toggleDropdown()">Account &#x25BC;</a>
+              <div class="dropdown-content" id="dropdownMenu">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Signup</a>
+              </div>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- HEADER END -->
+
+<!-- SIGNUP FORM START -->
+<div class="container" style="max-width: 400px; margin-top: 50px; margin-bottom: 50px;">
+  <div class="form-container" style="padding: 30px; background: #f9f9f9; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center; margin-bottom: 20px;">Login</h2>
+
+    <form method="POST" >
+      {% csrf_token %}
+      <input type="text" id="username" name="username" placeholder="username" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+      <input type="password" name="password" id="password" placeholder="Password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;">
+      <button type="submit" class="btn" style="width: 100%; background: #ff523b; color: white; padding: 10px; font-size: 16px; border-radius: 30px;">Login</button>
+      <p style="text-align:center; margin-top: 20px;">Create New Account  <a href="{% url 'signup' %}" style="color: #ff523b;">Signup here</a></p>
+    </form>
+  </div>
+</div>
+<!-- SIGNUP FORM END -->
+
+
+</body>
+</html>

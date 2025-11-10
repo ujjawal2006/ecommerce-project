@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedStore</title>
+    <link rel="stylesheet" href="{% static "css/product.css"%}">
+    <link href="https://fonts.googleapis.com/css2?
+    family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d511cacf01.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="{%static 'images/logo.png' %}" width="125px">
+            </div>
+            <nav>
+                <ul>
+                    <li> <a href="{% url 'home' %}">Home</a></li>
+                    <li> <a href="{% url 'Products' %}">Products</a></li>
+                    <li> <a href="">Contact</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="dropdown" id="accountDropdown">
+                        <a href="javascript:void(0);" onclick="toggleDropdown()">{{ user.username }} &#x25BC;</a>
+                        <div class="dropdown-content" id="dropdownMenu">
+                            <a href="{% url 'logout' %}">Logout</a>
+                            <a href="{%url 'edt_profile'%}">Profile</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="dropdown" id="accountDropdown">
+                        <a href="javascript:void(0);" onclick="toggleDropdown()">Account &#x25BC;</a>
+                        <div class="dropdown-content" id="dropdownMenu">
+                            <a href="{% url 'login' %}">Login</a>
+                            <a href="{% url 'signup' %}">Create New Account</a>
+                        </div>
+                    </li>
+                {% endif %}
+                    <li> <a href="">About</a></li>
+                </ul>
+            </nav>
+            
+          <!-- Navbar cart icon -->
+<a href="{% url 'show_cart' %}" style="position: relative;">
+    <img src="{% static 'images/cart.png' %}" width="30px" height="30px">
+    {% if cart_item_count > 0 %}
+    <span style="position: absolute; top: -8px; right: -8px; background: red; color: white; 
+                 font-size: 12px; padding: 2px 6px; border-radius: 50%;">
+        {{ cart_item_count }}
+    </span>
+    {% endif %}
+</a>
+
+        </div>
+        <div class="search-bar-container">
+          <div class="search-bar">
+              <form method="GET" action="{% url 'product_search' %}">
+                  <input type="text" name="q" placeholder="Search for products..." value="{{ query }}">
+                  <button type="submit"><i class="fa fa-search"></i></button>
+              </form>
+          </div>
+      </div>
+      
+      <style>
+        .search-bar-container {
+          display: flex;
+          justify-content: center;  /* Center the form horizontally */
+          align-items: center;      /* Center the form vertically if needed */
+          padding: 20px;
+      }
+      
+      .search-bar form {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid #ddd;
+          border-radius: 25px;
+          overflow: hidden;  /* Ensures that input and button are properly contained */
+      }
+      
+      .search-bar input[type="text"] {
+          width: 300px;  /* Adjust the width of the search bar */
+          padding: 10px;
+          border: none;
+          outline: none;
+          border-radius: 25px 0 0 25px; /* Rounded left corners */
+      }
+      
+      .search-bar button {
+          background-color: #ff6f61;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          cursor: pointer;
+          border-radius: 0 25px 25px 0; /* Rounded right corners */
+      }
+      
+      .search-bar button i {
+          font-size: 18px;
+      }
+      
+      </style>
+    <div class="row">
+
+
+
+
+<div class="small-container">
+    <div class="row row-2">
+        <h2>All Products</h2>
+        <select>
+            <option>Default sorting</option>
+            <option>Sort by price</option>
+            <option>Sort by popularity</option>
+        </select>
+    </div>     
+
+    <div class="row">
+        {% for product in products %}
+        <div class="col-4">
+            <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ product.image.url }}" >
+            </a>
+            <h4>{{ product.name }}</h4>
+            <p>${{ product.price }}</p>
+        </div>
+        {% endfor %}
+    </div> 
+    <h2 class="title">Latest  Products</h2>
+    <div class="row">
+        <div class="col-4">
+            <img src="{% static 'images/product-5.jpg' %}">
+            <h4>Red printed T-shirt</h4>
+            <p>$10</p>
+        </div>
+        <div class="col-4">
+            <img src="{% static 'images/product-6.jpg' %}">
+            <h4>Black T-shirt</h4>
+            <p>$30</p>
+        </div>
+        <div class="col-4">
+            <img src="{% static 'images/product-8.jpg' %}">
+            <h4>Watcht</h4>
+            <p>$40</p>
+        </div>
+        <div class="col-4">
+            <img src="{% static 'images/product-2.jpg' %}">
+            <h4>Black Shoes</h4>
+            <p>$35</p>
+        </div>
+      
+    </div>
+</div>
+<!-- Product Content ends here -->
+</div> <!-- End of .small-container -->
+</div> <!-- End of .row -->
+</div> <!-- End of .container -->
+
+<!-- FOOTER SECTION -->
+<div class="footer">
+    <div class="row">
+      <div class="footer-col-1">
+        <h3>Download our app</h3>
+        <p>Download app for android and iOS mobile phones</p>
+        <div class="app-logo">
+          <img src="{% static 'images/play-store.png' %}">
+          <img src="{% static 'images/app-store.png' %}">
+        </div>
+      </div>
+  
+      <div class="footer-col-2">
+        <img src="{% static 'images/logo-white.png' %}" width="150px">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est commodi totam quia itaque!</p>
+      </div>
+  
+      <div class="footer-col-3">
+        <h3>Useful Links</h3>
+        <ul>
+          <li>Coupons</li>
+          <li>Blog Post</li>
+          <li>Return Policy</li>
+          <li>Join Affiliate</li>
+        </ul>
+      </div>
+  
+      <div class="footer-col-4">
+        <h3>Follow us</h3>
+        <ul>
+          <li>Facebook</li>
+          <li>Twitter</li>
+          <li>Instagram</li>
+          <li>Youtube</li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <p class="copyright">Copyright © 2025</p>
+  </div>
+  
+
+</body>
+</html>
